@@ -2,17 +2,10 @@
 import { gql, useQuery } from "@apollo/client";
 import "./App.css";
 import backimg from './assets/s.jpg'
-import TaskCard from "./components/TaskCard";
+import TaskCard from "./components/cards/TaskCard";
+import TaskCardCreate from "./components/cards/TaskCardCreate";
+import { ALL_TASKS } from "./tasks/graphql-queries";
 
-const ALL_TASKS = gql`
-  query {
-    getAllTasks {
-      id
-      title
-      description
-    }
-  }
-`;
 
 function App() {
   const { data, error, loading } = useQuery(ALL_TASKS);
@@ -20,25 +13,24 @@ function App() {
   if (error) return <span className="text-red-500">{error}</span>;
   return (
 
-      <div className="flex flex-col justify-center items-center">
-        <img 
-        src={backimg}
-        width="450"
-        height="300"
-        />
-        <div className="absolute">
-
-        <h1 className=" text-3xl font-medium font-cursive text-[#0000AA]">Tasks list : </h1>
+      <div className="h-screen flex flex-col justify-center items-center gap-4 bg-gradient-to-tl from-green-300 via-blue-500 to-purple-600">
+        <div className="text-left flex flex-col gap-6">
+        <h1 className=" text-xl font-medium font-cursive text-white ">Project Tasks </h1>
+        <TaskCardCreate/>
+        </div>
         {loading ? (
           <p>loading...</p>
-        ) : (
-          <>
+          ) : (
+            <div className="flex flex-col text-left items-center gap-6">
+            <h1 className=" text-xl font-medium font-cursive text-white">Ongoing task </h1>
+            <div className="flex flex-grow flex-col gap-4 p-2">
             {data.getAllTasks.map((task) => (
-              <TaskCard task={task} />
+              <TaskCard task={task} key={task.id}/>
             ))}
-          </>
+            </div>
+          </div>
         )}
-        </div>
+        
       </div>
 
   );
