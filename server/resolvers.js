@@ -4,7 +4,7 @@ const resolvers = {
   Query: {
     hello: () => ` Hello world jack`,
 
-    getAllTaks: async () => {
+    getAllTasks: async () => {
       const tasks = await Task.find();
       return tasks;
     },
